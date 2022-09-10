@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'cloudinary',
     
     'profiles',
+    'tracks',
 ]
 
 MIDDLEWARE = [
