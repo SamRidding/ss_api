@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'tracks',
     'comments',
     'likes',
+    'reposts',
 ]
 
 MIDDLEWARE = [
