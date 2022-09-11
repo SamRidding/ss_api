@@ -3,7 +3,7 @@ from rest_framework import serializers
 from reposts.models import Repost
 
 
-class RespostSerializer(serializers.ModelSerializer):
+class RepostSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
 
     class Meta:
