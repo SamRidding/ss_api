@@ -14,9 +14,9 @@ class TrackList(APIView):
     ]
 
     def get(self, request):
-        posts = Track.objects.all()
+        tracks = Track.objects.all()
         serializer = TrackSerializer(
-            posts, many=True, context={'request': request}
+            tracks, many=True, context={'request': request}
         )
         return Response(serializer.data)
 
@@ -45,3 +45,10 @@ class TrackDetail(APIView):
             return track
         except Track.DoesNotExist:
             raise Http404
+
+    def get(self, request, pk):
+        track = self.get_object(pk)
+        serializer = TrackSerializer(
+            track, context={'request': request}
+        )
+        return Response(serializer.data)
