@@ -10,6 +10,12 @@ class TrackSerializer(serializers.ModelSerializer):
         source='owner.profile_img.image.url'
         )
 
+    def validate_image(self, value):
+        if value.size > 1024 * 1024 * 2:
+            raise serializers.ValidationError(
+                'Image size larger than 2MB!'
+            )
+
     def get_is_owner(self, obj):
         request = self.context['request']
         return request.user == obj.owner
