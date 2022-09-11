@@ -6,4 +6,9 @@ from .serializers import TrackSerializer
 
 
 class TrackList(APIView):
-    
+    def get(self, request):
+        posts = Track.objects.all()
+        serializer = TrackSerializer(
+            posts, many=True, context={'request': request}
+        )
+        return Response(serializer.data)
