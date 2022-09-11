@@ -1,8 +1,10 @@
+from django.http import Http404
 from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Track
 from .serializers import TrackSerializer
+from drf_api.permissions import IsOwnerOrReadOnly
 
 
 class TrackList(APIView):
@@ -33,4 +35,13 @@ class TrackList(APIView):
 
 
 class TrackDetail(APIView):
-    
+    permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = TrackSerializer
+
+    def get_object(self, pk):
+        try:
+            track = Track.objects.get(pk=pk)
+            self.check_object_permissions(self.request, track)
+            return track
+        except Track.DoesNotExist:
+            raise Http404
