@@ -6,9 +6,24 @@ from .serializers import TrackSerializer
 
 
 class TrackList(APIView):
+    serializer_class = TrackSerializer
+
     def get(self, request):
         posts = Track.objects.all()
         serializer = TrackSerializer(
             posts, many=True, context={'request': request}
         )
         return Response(serializer.data)
+
+    def post(self, request):
+        serializer = TrackSerializer(
+            data=request.data, context={'request': request}
+        )
+        if serializer.is_valid():
+            serializer.save(owner=request.user)
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors, status=status.HTTP_400_BAD_REQUEST
+        )
