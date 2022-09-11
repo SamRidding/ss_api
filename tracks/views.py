@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Track
@@ -7,6 +7,9 @@ from .serializers import TrackSerializer
 
 class TrackList(APIView):
     serializer_class = TrackSerializer
+    permission_classes = [
+        permissions.IsAuthenticatedOrReadOnly
+    ]
 
     def get(self, request):
         posts = Track.objects.all()
