@@ -13,6 +13,8 @@ class TrackSerializer(serializers.ModelSerializer):
         )
     like_id = serializers.SerializerMethodField()
     repost_id = serializers.SerializerMethodField()
+    likes_count = serializers.ReadOnlyField()
+    comments_count = serializers.ReadOnlyField()
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
@@ -49,5 +51,6 @@ class TrackSerializer(serializers.ModelSerializer):
             'image', 'content', 'status',
             'posted_at', 'edited_at', 'image',
             'is_owner', 'profile_id', 'profile_img',
-            'like_id', 'repost_id'
+            'like_id', 'repost_id', 'likes_count',
+            'comments_count'
         ]
