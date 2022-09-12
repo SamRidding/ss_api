@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from tracks.models import Track
 from likes.models import Like
+from reposts.models import Repost
 
 
 class TrackSerializer(serializers.ModelSerializer):
@@ -11,6 +12,7 @@ class TrackSerializer(serializers.ModelSerializer):
         source='owner.profile_img.image.url'
         )
     like_id = serializers.SerializerMethodField()
+    repost_id = serializers.SerializerMethodField()
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
@@ -31,6 +33,15 @@ class TrackSerializer(serializers.ModelSerializer):
             return like.id if like else None
         return None
 
+    def get_repost_id(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            repost = Repost.objects.filter(
+                owner=user, track=obj
+            ).first()
+            return repost.id if repost else None
+        return None
+
     class Meta:
         model = Track
         fields = [
@@ -38,5 +49,5 @@ class TrackSerializer(serializers.ModelSerializer):
             'image', 'content', 'status',
             'posted_at', 'edited_at', 'image',
             'is_owner', 'profile_id', 'profile_img',
-            'like_id'
+            'like_id', 'repost_id'
         ]
