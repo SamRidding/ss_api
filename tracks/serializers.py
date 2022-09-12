@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from tracks.models import Track
+from likes.models import Like
 
 
 class TrackSerializer(serializers.ModelSerializer):
@@ -9,6 +10,7 @@ class TrackSerializer(serializers.ModelSerializer):
     profile_img = serializers.ReadOnlyField(
         source='owner.profile_img.image.url'
         )
+    like_id = serializers.SerializerMethodField()
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
@@ -20,11 +22,21 @@ class TrackSerializer(serializers.ModelSerializer):
         request = self.context['request']
         return request.user == obj.owner
 
+    def get_like_id(self, obj):
+        user = self.context['request'].user
+        if user.is_authenticated:
+            like = Like.objects.filter(
+                owner=user, track=obj
+            ).first()
+            return like.id if like else None
+        return None
+
     class Meta:
         model = Track
         fields = [
             'id', 'owner', 'title', 'audio',
             'image', 'content', 'status',
             'posted_at', 'edited_at', 'image',
-            'is_owner', 'profile_id', 'profile_img'
+            'is_owner', 'profile_id', 'profile_img',
+            'like_id'
         ]
