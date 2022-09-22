@@ -11,7 +11,7 @@ class Track(models.Model):
         (PUBLISHED, 'Published')
     )
 
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True)
     audio = models.URLField(blank=True)
     image = models.ImageField(
