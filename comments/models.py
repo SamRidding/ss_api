@@ -11,7 +11,7 @@ class Comment(models.Model):
     edited_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-posted_at']
+        ordering = ['posted_at']
 
     def __str__(self):
         return self.content
