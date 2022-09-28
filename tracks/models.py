@@ -15,7 +15,7 @@ class Track(models.Model):
     title = models.CharField(max_length=200, blank=True)
     audio = models.URLField(blank=True)
     image = models.ImageField(
-        upload_to='images/', default='../defaultuserimg_mv93dr'
+        upload_to='images/', blank=True
     )
     content = models.TextField(blank=True)
     status = models.CharField(
