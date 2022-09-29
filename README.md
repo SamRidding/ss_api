@@ -1,108 +1,127 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Sound Space API
 
-Welcome vfg-95,
+This API was built for use with the front end react application [SoundSpace](https://soundspace-fe.herokuapp.com/)
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+Live Link: https://soundspace-api.herokuapp.com/
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **September 1, 2021**
+The repository for the front end can be found [here](https://github.com/vfg-95/soundspace)
+and the readme for the project is [here](https://github.com/vfg-95/soundspace/blob/main/README.md)
 
-## Gitpod Reminders
+## Database
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+The database for the project was built with [Django-REST-Framework](https://www.django-rest-framework.org/)
 
-`python3 -m http.server`
+### Schema
 
-A blue button should appear to click: _Make Public_,
+Below is the database schema for the API, displaying the models and their relationships:
 
-Another blue button should appear to click: _Open Browser_.
+<img src="assets/ssapi.png" >
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+SQLite was used for the database during development, and and PostgreSQL was used for produciton.
 
-A blue button should appear to click: _Make Public_,
+## Testing
 
-Another blue button should appear to click: _Open Browser_.
+The following functionality was tested on the database:
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+<img src="assets/apitesting.png" >
 
-To log into the Heroku toolbelt CLI:
+The following screenshots show corresponding data from the front end stored in the deployed API:
 
-1. Log in to your Heroku account and go to *Account Settings* in the menu under your avatar.
-2. Scroll down to the *API Key* and click *Reveal*
-3. Copy the key
-4. In Gitpod, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+- Profile:
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+<img src="assets/dbprofile.png" width=400>
 
-------
+- Track:
 
-## Release History
+<img src="assets/dbtrack.png" width=400>
 
-We continually tweak and adjust this template to help give you the best experience. Here is the version history:
+- Like:
 
-**September 1 2021:** Remove `PGHOSTADDR` environment variable.
+<img src="assets/dblike.png" width=400>
 
-**July 19 2021:** Remove `font_fix` script now that the terminal font issue is fixed.
+- Repost:
 
-**July 2 2021:** Remove extensions that are not available in Open VSX.
+<img src="assets/dbrepost.png" width=400>
 
-**June 30 2021:** Combined the P4 and P5 templates into one file, added the uptime script. See the FAQ at the end of this file.
+- Follow:
 
-**June 10 2021:** Added: `font_fix` script and alias to fix the Terminal font issue
+<img src="assets/dbfollow.png" width=400>
 
-**May 10 2021:** Added `heroku_config` script to allow Heroku API key to be stored as an environment variable.
+- Comment:
 
-**April 7 2021:** Upgraded the template for VS Code instead of Theia.
+<img src="assets/dbcomment.png" width=400>
 
-**October 21 2020:** Versions of the HTMLHint, Prettier, Bootstrap4 CDN and Auto Close extensions updated. The Python extension needs to stay the same version for now.
+### pep8
 
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
+I validated the code using pycodestyle to test that it met pep8 standards/requirements. These were met, the only file with errors being the settings.py file for having lines too long - I did not change these so as to keep the settings in order.
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+## Deployment
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+1.  Clone [this repository](https://github.com/vfg-95/ss_api).
+2.  In your IDE, connect to your repo, then enter this command in the terminal:
+        
+        pip install -r requirements.txt
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+- Ensure INSTALLED_APPS in settings.py matches the repository
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+3. In you terminal, enter these commands in the terminal:
 
-------
+        python manage.py makemigrations
+        python manage.py migrate
 
-## FAQ about the uptime script
+4.  Git add, commit and push all changes to your repo.
+5.  Create or log in to an account on Heroku.
+6.  Create a new app on Heroku.
+7.  Open your app on Heroku, go to Resources, Add-ons and search for PostgreSQL, then add it.
+8.  In the Deploy tab on Heroku, go to Deployment method and add your GitHub repository.
+9.  In the Deploy tab on Heroku, go to Manual deploy and select deploy branch for early deployment.
+10. Create or log in to an account on Cloudinary.
+11. Copy your API Environment Variable.
+12. Go back to Heroku, Settings and click on Reveal Config Vars.
+13. Add these variables to your config vars. PostgreSQL DATABASE_URL should already be there.
+    - ALLOWED_HOST | your_deployed_api_url
+    - CLIENT_ORIGIN | your_deployed_frontend_url
+    - CLIENT_ORIGIN_DEV | your_local_server_url
+    - CLOUDINARY_URL | your_api_variable
+    - SECRET_KEY | your_choice ([Secret Key Generator](https://miniwebtool.com/django-secret-key-generator/))
+    - DISABLE_COLLECTSTATIC | 1
+14. Create an env.py in the root directory, add it to .gitignore and add these lines at the top
 
-**Why have you added this script?**
+        import os
 
-It will help us to calculate how many running workspaces there are at any one time, which greatly helps us with cost and capacity planning. It will help us decide on the future direction of our cloud-based IDE strategy.
+        os.environ["SECRET_KEY"] = "your secret_key here"
+        os.environ["CLOUDINARY_URL"] = "cloudinary url here"
+        os.environ['DEV'] = '1'
 
-**How will this affect me?**
+15. In settings.py, update the CORS_ALLOWED_ORIGIN_REGEXES variable to match your local server url.
 
-For everyday usage of Gitpod, it doesn’t have any effect at all. The script only captures the following data:
+        if 'CLIENT_ORIGIN_DEV' in os.environ:
+            extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
+            CORS_ALLOWED_ORIGIN_REGEXES = [
+                rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
+            ]
 
-- An ID that is randomly generated each time the workspace is started.
-- The current date and time
-- The workspace status of “started” or “running”, which is sent every 5 minutes.
+16. Create a superuser for your site:
 
-It is not possible for us or anyone else to trace the random ID back to an individual, and no personal data is being captured. It will not slow down the workspace or affect your work.
+        python manage.py createsuperuser
 
-**So….?**
+17. To run your app locally, enter this command in your terminal:
+        python manage.py runserver
+    
+The project is now set up to automatically switch between DEBUG: True and False for development server and deployed site.
 
-We want to tell you this so that we are being completely transparent about the data we collect and what we do with it.
+### Production Deployment
 
-**Can I opt out?**
+1.  If changes has been made, make sure to run migrations:
 
-Yes, you can. Since no personally identifiable information is being captured, we'd appreciate it if you let the script run; however if you are unhappy with the idea, simply run the following commands from the terminal window after creating the workspace, and this will remove the uptime script:
+        python manage.py makemigrations
+        python manage.py migrate
 
-```
-pkill uptime.sh
-rm .vscode/uptime.sh
-```
+2.  Git add, commit and push all changes to your repo.
+3.  On Heroku, go to Deploy and and choose manual deploy.
 
-**Anything more?**
+## Credits
 
-Yes! We'd strongly encourage you to look at the source code of the `uptime.sh` file so that you know what it's doing. As future software developers, it will be great practice to see how these shell scripts work.
+The database was based upon the Code Institute [DRF-API](https://github.com/Code-Institute-Solutions/drf-api) which provided me with a lot of the functionality required from my API.
 
----
-
-Happy coding!
